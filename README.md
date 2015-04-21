@@ -28,7 +28,7 @@ Example router code to log pageviews for routes:
 Meteor.Router.add({
   '/': function() {
     GAnalytics.pageview();
-    GAnalytics.screenview('myapp','home');
+    GAnalytics.screenview('myapp','home','0.0.1');
     return 'home';}
 })
 ```
@@ -44,7 +44,7 @@ GAnalytics.event("account","signin","DataRiot");
 GAnalytics.event("account","signin","DataRiot", 2);
 
 
-GAnalytics.screenview("myapp","home");
+GAnalytics.screenview("myapp","home","0.0.1");
 ```
 
 ### Cookie Options & Advanced Features

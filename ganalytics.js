@@ -6,7 +6,7 @@ GAnalytics.pageview = function(pageLocation) {
 GAnalytics.event = function(category, action, label, value) {
     console.log("Analytics code is not loaded yet.");
   };
-GAnalytics.screenview = function(appName, screenName) {
+GAnalytics.screenview = function(appName, screenName, appVersion) {
     console.log("Analytics code is not loaded yet.");
 };
 
@@ -66,19 +66,21 @@ if(Meteor.settings && Meteor.settings.public !== undefined && Meteor.settings.pu
     ga('send', 'event', category, action, label, value);
   }
 
-  GAnalytics.screenview = function(appName, screenName) {
+  GAnalytics.screenview = function(appName, screenName, appVersion) {
     if(!!gaSettings.debug)
-      console.log("Logging screenview: appname - "+ appName + " screenName - " + screenName);
+      console.log("Logging screenview: appName - "+ appName + ", screenName - " + screenName + ", appVersion - " + appVersion);
       if(!appName) {
         appName = 'unknown';
       }
       if(!screenName) {
         screenName = window.location.pathname;
       }
-      ga('send', 'screenview', {
+      var event = {
         'appName' : appName,
         'screenName' : screenName
-      });
+      }
+      if(appVersion) event['appVersion'] = appVersion;
+      ga('send', 'screenview', event);
   }
 
 } else {
