@@ -7,7 +7,7 @@ Log page views and events to Google Analytics.
 
 ### Installing
 ```
-meteor add datariot:ganalytics
+meteor add shadowsyc:ganalytics
 ```
 
 If you don't have a settings.json file, you need to add one and load it according to the Meteor documentation. http://docs.meteor.com/#meteor_settings
@@ -28,6 +28,7 @@ Example router code to log pageviews for routes:
 Meteor.Router.add({
   '/': function() {
     GAnalytics.pageview();
+    GAnalytics.screenview('myapp','home');
     return 'home';}
 })
 ```
@@ -41,6 +42,9 @@ GAnalytics.pageview("/hello");
 GAnalytics.event("account","signin");
 GAnalytics.event("account","signin","DataRiot");
 GAnalytics.event("account","signin","DataRiot", 2);
+
+
+GAnalytics.screenview("myapp","home");
 ```
 
 ### Cookie Options & Advanced Features
@@ -64,4 +68,4 @@ You can also [provide options](https://developers.google.com/analytics/devguides
 
 ### Debug Mode
 
-If you pass `debug: true` as a setting, the package will output console logs on `GAnalytics.pageview()` and `GAnalytics.event()`.
+If you pass `debug: true` as a setting, the package will output console logs on `GAnalytics.pageview()`, `GAnalytics.event()` and `GAnalytics.screenview()`.

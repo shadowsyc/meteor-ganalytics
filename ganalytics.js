@@ -6,6 +6,9 @@ GAnalytics.pageview = function(pageLocation) {
 GAnalytics.event = function(category, action, label, value) {
     console.log("Analytics code is not loaded yet.");
   };
+GAnalytics.screenview = function(appName, screenName) {
+    console.log("Analytics code is not loaded yet.");
+};
 
 
 load = function(i,s,o,g,r,a,m) {
@@ -62,6 +65,22 @@ if(Meteor.settings && Meteor.settings.public !== undefined && Meteor.settings.pu
       console.log("Logging event: "+category+" | "+ action + " | " + label + " | " + value)
     ga('send', 'event', category, action, label, value);
   }
+
+  GAnalytics.screenview = function(appName, screenName) {
+    if(!!gaSettings.debug)
+      console.log("Logging screenview: appname - "+ appName + " screenName - " + screenName);
+      if(!appName) {
+        appName = 'unknown';
+      }
+      if(!screenName) {
+        screenName = window.location.pathname;
+      }
+      ga('send', 'screenview', {
+        'appName' : appName,
+        'screenName' : screenName
+      });
+  }
+
 } else {
   console.log("public.ga.account has not been set in your settings.json file.");
 }
