@@ -1,5 +1,5 @@
 Package.describe({
-  summary: "Publish pageviews, events, screenviews, usertime to Google Analytics using the new analytics.js code.",
+  summary: "Adding support for user timing tracking",
   version: "0.2.3",
   name: "shadowsyc:ganalytics",
   git: 'https://github.com/shadowsyc/meteor-ganalytics.git'
