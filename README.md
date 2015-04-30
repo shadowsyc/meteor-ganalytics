@@ -45,6 +45,10 @@ GAnalytics.event("account","signin","DataRiot", 2);
 
 
 GAnalytics.screenview("myapp","home","0.0.1");
+
+
+GAnalytics.usertime("quest","start",.5);
+GAnalytics.usertime("quest","start",.5,"battle 3");
 ```
 
 ### Cookie Options & Advanced Features

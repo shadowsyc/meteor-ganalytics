@@ -10,6 +10,9 @@ GAnalytics.screenview = function(appName, screenName, appVersion) {
     console.log("Analytics code is not loaded yet.");
 };
 
+GAnalytics.usertime = function(category, name, time, label) {
+    console.log("Analytics code is not loaded yet.");
+}
 
 load = function(i,s,o,g,r,a,m) {
   i['GoogleAnalyticsObject']=r;
@@ -81,6 +84,17 @@ if(Meteor.settings && Meteor.settings.public !== undefined && Meteor.settings.pu
       }
       if(appVersion) event['appVersion'] = appVersion;
       ga('send', 'screenview', event);
+  }
+
+  GAnalytics.usertime = function(category, name, time, label) {
+    if(!!gaSettings.debug)
+      console.log("Logging usertime: category- "+ category + ", name - " + name + ", time - " + time + ", label - " + label);
+
+      if(!label) {
+        ga('send', 'timing', category, name, time);
+      } else {
+        ga('send', 'timing', category, name, time, label);
+      }
   }
 
 } else {
