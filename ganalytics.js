@@ -1,17 +1,23 @@
 GAnalytics = {}
 
 GAnalytics.pageview = function(pageLocation) {
-    console.log("Analytics code is not loaded yet.");
-  };
+  console.log("Analytics code is not loaded yet.");
+};
+
 GAnalytics.event = function(category, action, label, value) {
-    console.log("Analytics code is not loaded yet.");
-  };
+  console.log("Analytics code is not loaded yet.");
+};
+
 GAnalytics.screenview = function(appName, screenName, appVersion) {
-    console.log("Analytics code is not loaded yet.");
+  console.log("Analytics code is not loaded yet.");
 };
 
 GAnalytics.usertime = function(category, name, time, label) {
-    console.log("Analytics code is not loaded yet.");
+  console.log("Analytics code is not loaded yet.");
+}
+
+GAnalytics._trackuser = function() {
+  console.log("Analytics code is not loaded yet.");
 }
 
 load = function(i,s,o,g,r,a,m) {
@@ -32,6 +38,9 @@ if(Meteor.settings && Meteor.settings.public !== undefined && Meteor.settings.pu
   var gaSettings = Meteor.settings.public.ga,
       gaConfig = {};
 
+  if(typeof gaSettings.debug == 'undefined') gaSettings.debug = false;
+  if(typeof gaSettings.trackUserId == 'undefined') gaSettings.trackUserId = false;
+
   // cookie settings
   if(typeof gaSettings.cookieName !== 'undefined')
     gaConfig.cookieName = gaSettings.cookieName;
@@ -42,6 +51,9 @@ if(Meteor.settings && Meteor.settings.public !== undefined && Meteor.settings.pu
   if(typeof gaSettings.cookieExpires !== 'undefined')
     gaConfig.cookieExpires = gaSettings.cookieExpires;
 
+  if(!!gaSettings.trackUserId && Meteor.userId()) {
+    gaConfig.userId = Meteor.userId();
+  }
   // if gaConfig is still empty, default it to 'auto'
   if(Object.keys(gaConfig).length === 0)
     gaConfig = 'auto';
@@ -60,12 +72,16 @@ if(Meteor.settings && Meteor.settings.public !== undefined && Meteor.settings.pu
     if(!pageLocation) {
       pageLocation = window.location.pathname;
     }
+
+    GAnalytics._trackuser();
     ga('send', 'pageview', pageLocation);
   }
   
   GAnalytics.event = function(category, action, label, value) {
     if(!!gaSettings.debug)
       console.log("Logging event: "+category+" | "+ action + " | " + label + " | " + value)
+
+    GAnalytics._trackuser();
     ga('send', 'event', category, action, label, value);
   }
 
@@ -83,6 +99,8 @@ if(Meteor.settings && Meteor.settings.public !== undefined && Meteor.settings.pu
         'screenName' : screenName
       }
       if(appVersion) event['appVersion'] = appVersion;
+
+      GAnalytics._trackuser();
       ga('send', 'screenview', event);
   }
 
@@ -90,11 +108,26 @@ if(Meteor.settings && Meteor.settings.public !== undefined && Meteor.settings.pu
     if(!!gaSettings.debug)
       console.log("Logging usertime: category- "+ category + ", name - " + name + ", time - " + time + ", label - " + label);
 
+      GAnalytics._trackuser();
       if(!label) {
         ga('send', 'timing', category, name, time);
       } else {
         ga('send', 'timing', category, name, time, label);
       }
+  }
+
+  GAnalytics._trackuser = function() {
+    if(!!gaSettings.trackUserId) {
+      var user_id = Meteor.userId();
+
+      if(!!gaSettings.debug)
+        console.log("Tracking user_id: " + user_id);
+
+      if(user_id) {
+        ga('set', '&uid', user_id);
+        ga('set', 'dimension1', user_id);
+      }
+    }
   }
 
 } else {

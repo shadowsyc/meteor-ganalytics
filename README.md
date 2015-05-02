@@ -64,7 +64,8 @@ You can also [provide options](https://developers.google.com/analytics/devguides
       "cookieDomain": "mynew.domain.com",
       "cookieExpires": 60 * 60 * 24 * 28,  // Time in seconds.
       "trackInterests": true,  // Enable also GA website and
-      "trackInPage": true      // force/ignore the Google check.
+      "trackInPage": true,     // force/ignore the Google check.
+      "trackUserId": true      // enabling user_id tracking
     }
   }
 }
